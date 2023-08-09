@@ -47,9 +47,10 @@
 
 import { Router } from "express";
 import Joi from "joi";
-import loginController from "../../controller/authentication/login.controller";
+import LoginController from "../../controller/authentication/login.controller";
 import ErrorResponse from "../../interfaces/ErrorResponse";
 import ILoginResponse from "../../interfaces/authentication/ILoginResponse";
+import JoiValidator from "../../middleware/validation.middleware";
 import constant from "../../utils/constant.util";
 const { API } = constant;
 const loginRouter = Router();
@@ -65,24 +66,16 @@ const schema = Joi.object({
 
 loginRouter.post<{}, ILoginResponse | ErrorResponse>(
   `/${API.LOGIN}`,
-  (req, res) => {
+  JoiValidator(schema),
+  async (req, res) => {
     try {
-      /**Validating the data using joi validator*/
-      const validatePayload = schema.validate(req.body);
-      if (validatePayload.error) {
-        res.send({
-          message: validatePayload.error.message,
-          stack: validatePayload.error,
-        });
-      }
-      /**Validating the data using joi validator*/
-
-      const loginControllerData: ILoginResponse = loginController(req);
-      res.send(loginControllerData);
+      const LoginControllerData: ILoginResponse | ErrorResponse =
+        await LoginController(req);
+      return res.send(LoginControllerData);
     } catch (err) {
-      res.status(500).send({
+      console.log(err);
+      return res.status(500).send({
         message: "Internal Server error",
-        stack: process.env.NODE_ENV == "production" ? "" : err,
       });
     }
   }

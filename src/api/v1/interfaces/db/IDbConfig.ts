@@ -1,9 +1,10 @@
 export default interface IDbConfig {
-  user: string;
-  password: string;
-  database: string;
+  user: string | undefined;
+  password: string | undefined;
+  database: string | undefined;
   server: string;
   options: {
-    trustServerCertificate: boolean; // change to true for local dev / self-signed certs
+    trustServerCertificate: boolean;
+    encrypt: boolean;
   };
 }
