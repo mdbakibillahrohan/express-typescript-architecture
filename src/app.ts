@@ -46,5 +46,9 @@ dbconnect(dbConfig.productionManagementDB, (err: any) => {
   if (err) throw err;
   console.log("Successfully connected to database");
 });
+dbconnect(dbConfig.AsibTest, (err: any) => {
+  if (err) throw err;
+  console.log("Successfully connected to database2");
+});
 
 export default app;

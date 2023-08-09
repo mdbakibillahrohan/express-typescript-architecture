@@ -8,9 +8,22 @@ import IDbConfig from "../interfaces/db/IDbConfig";
  * @returns
  */
 export const getData = async (dbConfig: IDbConfig, query: string) => {
-  await mssql.connect(dbConfig);
-  const data = await mssql.query(query);
-  return data.recordset;
+  const pool = new mssql.ConnectionPool(dbConfig);
+  try {
+    await pool.connect();
+    const request = pool.request();
+    const result = await request.query(query);
+    if (result !== null) {
+      if (result.rowsAffected[0] > 0) {
+        return result.recordset;
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  } finally {
+    pool.close();
+  }
 };
 
 export const insertData = async (dbConfig: any, query: string) => {};
