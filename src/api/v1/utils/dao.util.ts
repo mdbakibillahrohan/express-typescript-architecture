@@ -2,7 +2,7 @@ import mssql from "mssql";
 import IDbConfig from "../interfaces/db/IDbConfig";
 
 /**
- * Take the DataBase configuration and query as parameter and return data
+ * Take the Database configuration and query as parameter and return data
  * @param dbConfig
  * @param query
  * @returns

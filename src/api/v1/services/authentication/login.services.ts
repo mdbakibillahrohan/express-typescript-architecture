@@ -6,8 +6,6 @@ const Loginservices = async (data: { user_name: string; password: string }) => {
   const query2 = `select * from Persons`;
   const serviceData1 = await getData(dbConfig.productionManagementDB, query1);
   const serviceData2 = await getData(dbConfig.AsibTest, query2);
-  console.log(serviceData1);
-  console.log(serviceData2);
   return serviceData1;
 };
 export default Loginservices;
