@@ -1,25 +1,21 @@
-import ErrorResponse from "../../interfaces/ErrorResponse";
-import ILoginResponse from "../../interfaces/authentication/ILoginResponse";
-import Loginservices from "../../services/authentication/login.services";
-
 /**
  * Login Controller
  * @param req
  * @returns IILoginResponse
  */
 
-const LoginController = async (
-  req: any
-): Promise<ILoginResponse | ErrorResponse> => {
-  const loginServices: any = await Loginservices(req.body);
-  return {
-    token: "dkfjsdlkj",
-    user_info: {
-      name: loginServices[0].FullName,
-      user_id: "w34",
-      employee_id: "343434",
-    },
-  };
+import Loginservices from "../../services/authentication/login.services";
+
+const LoginController = async (req: any, res: any) => {
+  try {
+    const loginServices: any = await Loginservices(req.body);
+    return res.send({
+      name: "Rohan",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal server error");
+  }
 };
 
 export default LoginController;

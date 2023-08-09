@@ -48,8 +48,6 @@
 import { Router } from "express";
 import Joi from "joi";
 import LoginController from "../../controller/authentication/login.controller";
-import ErrorResponse from "../../interfaces/ErrorResponse";
-import ILoginResponse from "../../interfaces/authentication/ILoginResponse";
 import JoiValidator from "../../middleware/validation.middleware";
 import constant from "../../utils/constant.util";
 const { API } = constant;
@@ -64,20 +62,9 @@ const schema = Joi.object({
   password: Joi.string().trim().min(1).max(128).required(),
 });
 
-loginRouter.post<{}, ILoginResponse | ErrorResponse>(
+loginRouter.post(
   `/${API.LOGIN}`,
-  JoiValidator(schema),
-  async (req, res) => {
-    try {
-      const LoginControllerData: ILoginResponse | ErrorResponse =
-        await LoginController(req);
-      return res.send(LoginControllerData);
-    } catch (err) {
-      console.log(err);
-      return res.status(500).send({
-        message: "Internal Server error",
-      });
-    }
-  }
+  JoiValidator(schema, "body"),
+  LoginController
 );
 export default loginRouter;
