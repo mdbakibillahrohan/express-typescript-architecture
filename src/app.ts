@@ -6,7 +6,6 @@ import swaggerJsdoc from "swagger-jsdoc";
 import * as swaggerUi from "swagger-ui-express";
 import * as middlewares from "../src/api/v1/middleware/middlewares";
 import api from "./api/api";
-import dbConfig, { dbconnect } from "./api/v1/config/db.config";
 require("dotenv").config();
 const app = express();
 
@@ -44,13 +43,5 @@ app.use(api);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
-dbconnect(dbConfig.productionManagementDB, (err: any) => {
-  if (err) throw err;
-  console.log("Successfully connected to database");
-});
-dbconnect(dbConfig.AsibTest, (err: any) => {
-  if (err) throw err;
-  console.log("Successfully connected to database2");
-});
 
 export default app;
